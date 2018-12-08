@@ -29,5 +29,5 @@ defmodule GoogleApi.Datastore.V1.Connection do
       "https://www.googleapis.com/auth/datastore"
     ],
     otp_app: :google_api_datastore,
-    base_url: Application.get_env(:cloud_datastore_api, :base_url)
+    base_url: if System.get_env("DATASTORE_HOST"), do: System.get_env("DATASTORE_HOST"), else: "https://datastore.googleapis.com"
 end
