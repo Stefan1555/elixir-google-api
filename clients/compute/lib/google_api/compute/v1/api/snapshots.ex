@@ -25,14 +25,14 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
   alias GoogleApi.Gax.{Request, Response}
 
   @doc """
-  Deletes the specified Snapshot resource. Keep in mind that deleting a single snapshot might not necessarily delete all the data on that snapshot. If any data on the snapshot that is marked for deletion is needed for subsequent snapshots, the data will be moved to the next corresponding snapshot.  For more information, see Deleting snaphots.
+  Deletes the specified Snapshot resource. Keep in mind that deleting a single snapshot might not necessarily delete all the data on that snapshot. If any data on the snapshot that is marked for deletion is needed for subsequent snapshots, the data will be moved to the next corresponding snapshot.  For more information, see Deleting snapshots.
 
   ## Parameters
 
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
   - snapshot (String.t): Name of the Snapshot resource to delete.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -49,8 +49,8 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
   """
   @spec compute_snapshots_delete(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_snapshots_delete(connection, project, snapshot, opts \\ []) do
-    optional_params = %{
+  def compute_snapshots_delete(connection, project, snapshot, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -68,11 +68,11 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
         "project" => URI.encode_www_form(project),
         "snapshot" => URI.encode_www_form(snapshot)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
   end
 
   @doc """
@@ -83,7 +83,7 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
   - snapshot (String.t): Name of the Snapshot resource to return.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -99,8 +99,8 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
   """
   @spec compute_snapshots_get(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Snapshot.t()} | {:error, Tesla.Env.t()}
-  def compute_snapshots_get(connection, project, snapshot, opts \\ []) do
-    optional_params = %{
+  def compute_snapshots_get(connection, project, snapshot, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -117,11 +117,66 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
         "project" => URI.encode_www_form(project),
         "snapshot" => URI.encode_www_form(snapshot)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Snapshot{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Snapshot{}])
+  end
+
+  @doc """
+  Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+
+  ## Parameters
+
+  - connection (GoogleApi.Compute.V1.Connection): Connection to server
+  - project (String.t): Project ID for this request.
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
+    - :alt (String.t): Data format for the response.
+    - :fields (String.t): Selector specifying which fields to include in a partial response.
+    - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    - :oauth_token (String.t): OAuth 2.0 token for the current user.
+    - :prettyPrint (boolean()): Returns response with indentations and line breaks.
+    - :quotaUser (String.t): An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    - :userIp (String.t): Deprecated. Please use quotaUser instead.
+
+  ## Returns
+
+  {:ok, %GoogleApi.Compute.V1.Model.Policy{}} on success
+  {:error, info} on failure
+  """
+  @spec compute_snapshots_get_iam_policy(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
+          {:ok, GoogleApi.Compute.V1.Model.Policy.t()} | {:error, Tesla.Env.t()}
+  def compute_snapshots_get_iam_policy(
+        connection,
+        project,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
+      :alt => :query,
+      :fields => :query,
+      :key => :query,
+      :oauth_token => :query,
+      :prettyPrint => :query,
+      :quotaUser => :query,
+      :userIp => :query
+    }
+
+    request =
+      Request.new()
+      |> Request.method(:get)
+      |> Request.url("/{project}/global/snapshots/{resource}/getIamPolicy", %{
+        "project" => URI.encode_www_form(project),
+        "resource" => URI.encode_www_form(resource)
+      })
+      |> Request.add_optional_params(optional_params_config, optional_params)
+
+    connection
+    |> Connection.execute(request)
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Policy{}])
   end
 
   @doc """
@@ -131,7 +186,7 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
 
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -151,8 +206,8 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
   """
   @spec compute_snapshots_list(Tesla.Env.client(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.SnapshotList.t()} | {:error, Tesla.Env.t()}
-  def compute_snapshots_list(connection, project, opts \\ []) do
-    optional_params = %{
+  def compute_snapshots_list(connection, project, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -172,11 +227,68 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
       |> Request.url("/{project}/global/snapshots", %{
         "project" => URI.encode_www_form(project)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.SnapshotList{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.SnapshotList{}])
+  end
+
+  @doc """
+  Sets the access control policy on the specified resource. Replaces any existing policy.
+
+  ## Parameters
+
+  - connection (GoogleApi.Compute.V1.Connection): Connection to server
+  - project (String.t): Project ID for this request.
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
+    - :alt (String.t): Data format for the response.
+    - :fields (String.t): Selector specifying which fields to include in a partial response.
+    - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    - :oauth_token (String.t): OAuth 2.0 token for the current user.
+    - :prettyPrint (boolean()): Returns response with indentations and line breaks.
+    - :quotaUser (String.t): An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    - :userIp (String.t): Deprecated. Please use quotaUser instead.
+    - :body (GlobalSetPolicyRequest): 
+
+  ## Returns
+
+  {:ok, %GoogleApi.Compute.V1.Model.Policy{}} on success
+  {:error, info} on failure
+  """
+  @spec compute_snapshots_set_iam_policy(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
+          {:ok, GoogleApi.Compute.V1.Model.Policy.t()} | {:error, Tesla.Env.t()}
+  def compute_snapshots_set_iam_policy(
+        connection,
+        project,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
+      :alt => :query,
+      :fields => :query,
+      :key => :query,
+      :oauth_token => :query,
+      :prettyPrint => :query,
+      :quotaUser => :query,
+      :userIp => :query,
+      :body => :body
+    }
+
+    request =
+      Request.new()
+      |> Request.method(:post)
+      |> Request.url("/{project}/global/snapshots/{resource}/setIamPolicy", %{
+        "project" => URI.encode_www_form(project),
+        "resource" => URI.encode_www_form(resource)
+      })
+      |> Request.add_optional_params(optional_params_config, optional_params)
+
+    connection
+    |> Connection.execute(request)
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Policy{}])
   end
 
   @doc """
@@ -186,8 +298,8 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
 
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
-  - resource (String.t): Name of the resource for this request.
-  - opts (KeywordList): [optional] Optional parameters
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -204,8 +316,14 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
   """
   @spec compute_snapshots_set_labels(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_snapshots_set_labels(connection, project, resource, opts \\ []) do
-    optional_params = %{
+  def compute_snapshots_set_labels(
+        connection,
+        project,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -223,10 +341,72 @@ defmodule GoogleApi.Compute.V1.Api.Snapshots do
         "project" => URI.encode_www_form(project),
         "resource" => URI.encode_www_form(resource)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
+  end
+
+  @doc """
+  Returns permissions that a caller has on the specified resource.
+
+  ## Parameters
+
+  - connection (GoogleApi.Compute.V1.Connection): Connection to server
+  - project (String.t): Project ID for this request.
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
+    - :alt (String.t): Data format for the response.
+    - :fields (String.t): Selector specifying which fields to include in a partial response.
+    - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    - :oauth_token (String.t): OAuth 2.0 token for the current user.
+    - :prettyPrint (boolean()): Returns response with indentations and line breaks.
+    - :quotaUser (String.t): An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    - :userIp (String.t): Deprecated. Please use quotaUser instead.
+    - :body (TestPermissionsRequest): 
+
+  ## Returns
+
+  {:ok, %GoogleApi.Compute.V1.Model.TestPermissionsResponse{}} on success
+  {:error, info} on failure
+  """
+  @spec compute_snapshots_test_iam_permissions(
+          Tesla.Env.client(),
+          String.t(),
+          String.t(),
+          keyword()
+        ) ::
+          {:ok, GoogleApi.Compute.V1.Model.TestPermissionsResponse.t()} | {:error, Tesla.Env.t()}
+  def compute_snapshots_test_iam_permissions(
+        connection,
+        project,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
+      :alt => :query,
+      :fields => :query,
+      :key => :query,
+      :oauth_token => :query,
+      :prettyPrint => :query,
+      :quotaUser => :query,
+      :userIp => :query,
+      :body => :body
+    }
+
+    request =
+      Request.new()
+      |> Request.method(:post)
+      |> Request.url("/{project}/global/snapshots/{resource}/testIamPermissions", %{
+        "project" => URI.encode_www_form(project),
+        "resource" => URI.encode_www_form(resource)
+      })
+      |> Request.add_optional_params(optional_params_config, optional_params)
+
+    connection
+    |> Connection.execute(request)
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.TestPermissionsResponse{}])
   end
 end

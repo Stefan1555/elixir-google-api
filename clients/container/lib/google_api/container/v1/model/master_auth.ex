@@ -23,11 +23,11 @@ defmodule GoogleApi.Container.V1.Model.MasterAuth do
   ## Attributes
 
   - clientCertificate (String.t): [Output only] Base64-encoded public certificate used by clients to authenticate to the cluster endpoint. Defaults to: `null`.
-  - clientCertificateConfig (ClientCertificateConfig): Configuration for client certificate authentication on the cluster.  If no configuration is specified, a client certificate is issued. Defaults to: `null`.
+  - clientCertificateConfig (ClientCertificateConfig): Configuration for client certificate authentication on the cluster. For clusters before v1.12, if no configuration is specified, a client certificate is issued. Defaults to: `null`.
   - clientKey (String.t): [Output only] Base64-encoded private key used by clients to authenticate to the cluster endpoint. Defaults to: `null`.
   - clusterCaCertificate (String.t): [Output only] Base64-encoded public certificate that is the root of trust for the cluster. Defaults to: `null`.
   - password (String.t): The password to use for HTTP basic authentication to the master endpoint. Because the master endpoint is open to the Internet, you should create a strong password.  If a password is provided for cluster creation, username must be non-empty. Defaults to: `null`.
-  - username (String.t): The username to use for HTTP basic authentication to the master endpoint. For clusters v1.6.0 and later, you can disable basic authentication by providing an empty username. Defaults to: `null`.
+  - username (String.t): The username to use for HTTP basic authentication to the master endpoint. For clusters v1.6.0 and later, basic authentication can be disabled by leaving username unspecified (or setting it to the empty string). Defaults to: `null`.
   """
 
   use GoogleApi.Gax.ModelBase

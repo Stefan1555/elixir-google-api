@@ -29,7 +29,7 @@ defmodule GoogleApi.Compute.V1.Model.BackendService do
   - creationTimestamp (String.t): [Output Only] Creation timestamp in RFC3339 text format. Defaults to: `null`.
   - description (String.t): An optional description of this resource. Provide this property when you create the resource. Defaults to: `null`.
   - enableCDN (boolean()): If true, enable Cloud CDN for this BackendService.  When the load balancing scheme is INTERNAL, this field is not used. Defaults to: `null`.
-  - fingerprint (binary()): Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a BackendService. An up-to-date fingerprint must be provided in order to update the BackendService.  To see the latest fingerprint, make a get() request to retrieve a BackendService. Defaults to: `null`.
+  - fingerprint (binary()): Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a BackendService. An up-to-date fingerprint must be provided in order to update the BackendService, otherwise the request will fail with error 412 conditionNotMet.  To see the latest fingerprint, make a get() request to retrieve a BackendService. Defaults to: `null`.
   - healthChecks ([String.t]): The list of URLs to the HttpHealthCheck or HttpsHealthCheck resource for health checking this BackendService. Currently at most one health check can be specified, and a health check is required for Compute Engine backend services. A health check must not be specified for App Engine backend and Cloud Function backend.  For internal load balancing, a URL to a HealthCheck resource must be specified instead. Defaults to: `null`.
   - iap (BackendServiceIap):  Defaults to: `null`.
   - id (String.t): [Output Only] The unique identifier for the resource. This identifier is defined by the server. Defaults to: `null`.
@@ -42,6 +42,7 @@ defmodule GoogleApi.Compute.V1.Model.BackendService do
   - protocol (String.t): The protocol this BackendService uses to communicate with backends.  Possible values are HTTP, HTTPS, TCP, and SSL. The default is HTTP.  For internal load balancing, the possible values are TCP and UDP, and the default is TCP. Defaults to: `null`.
     - Enum - one of [HTTP, HTTPS, SSL, TCP, UDP]
   - region (String.t): [Output Only] URL of the region where the regional backend service resides. This field is not applicable to global backend services. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body. Defaults to: `null`.
+  - securityPolicy (String.t): [Output Only] The resource URL for the security policy associated with this backend service. Defaults to: `null`.
   - selfLink (String.t): [Output Only] Server-defined URL for the resource. Defaults to: `null`.
   - sessionAffinity (String.t): Type of session affinity to use. The default is NONE.  When the load balancing scheme is EXTERNAL, can be NONE, CLIENT_IP, or GENERATED_COOKIE.  When the load balancing scheme is INTERNAL, can be NONE, CLIENT_IP, CLIENT_IP_PROTO, or CLIENT_IP_PORT_PROTO.  When the protocol is UDP, this field is not used. Defaults to: `null`.
     - Enum - one of [CLIENT_IP, CLIENT_IP_PORT_PROTO, CLIENT_IP_PROTO, GENERATED_COOKIE, NONE]
@@ -69,6 +70,7 @@ defmodule GoogleApi.Compute.V1.Model.BackendService do
           :portName => any(),
           :protocol => any(),
           :region => any(),
+          :securityPolicy => any(),
           :selfLink => any(),
           :sessionAffinity => any(),
           :timeoutSec => any()
@@ -92,6 +94,7 @@ defmodule GoogleApi.Compute.V1.Model.BackendService do
   field(:portName)
   field(:protocol)
   field(:region)
+  field(:securityPolicy)
   field(:selfLink)
   field(:sessionAffinity)
   field(:timeoutSec)

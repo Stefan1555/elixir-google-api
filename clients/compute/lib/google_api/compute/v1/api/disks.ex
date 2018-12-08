@@ -31,7 +31,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
 
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -51,8 +51,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   """
   @spec compute_disks_aggregated_list(Tesla.Env.client(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.DiskAggregatedList.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_aggregated_list(connection, project, opts \\ []) do
-    optional_params = %{
+  def compute_disks_aggregated_list(connection, project, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -72,11 +72,11 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
       |> Request.url("/{project}/aggregated/disks", %{
         "project" => URI.encode_www_form(project)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.DiskAggregatedList{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.DiskAggregatedList{}])
   end
 
   @doc """
@@ -88,7 +88,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
   - disk (String.t): Name of the persistent disk to snapshot.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -112,8 +112,15 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
           String.t(),
           keyword()
         ) :: {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_create_snapshot(connection, project, zone, disk, opts \\ []) do
-    optional_params = %{
+  def compute_disks_create_snapshot(
+        connection,
+        project,
+        zone,
+        disk,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -134,11 +141,11 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "zone" => URI.encode_www_form(zone),
         "disk" => URI.encode_www_form(disk)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
   end
 
   @doc """
@@ -150,7 +157,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
   - disk (String.t): Name of the persistent disk to delete.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -167,8 +174,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   """
   @spec compute_disks_delete(Tesla.Env.client(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_delete(connection, project, zone, disk, opts \\ []) do
-    optional_params = %{
+  def compute_disks_delete(connection, project, zone, disk, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -187,11 +194,11 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "zone" => URI.encode_www_form(zone),
         "disk" => URI.encode_www_form(disk)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
   end
 
   @doc """
@@ -203,7 +210,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
   - disk (String.t): Name of the persistent disk to return.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -219,8 +226,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   """
   @spec compute_disks_get(Tesla.Env.client(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Disk.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_get(connection, project, zone, disk, opts \\ []) do
-    optional_params = %{
+  def compute_disks_get(connection, project, zone, disk, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -238,11 +245,74 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "zone" => URI.encode_www_form(zone),
         "disk" => URI.encode_www_form(disk)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Disk{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Disk{}])
+  end
+
+  @doc """
+  Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+
+  ## Parameters
+
+  - connection (GoogleApi.Compute.V1.Connection): Connection to server
+  - project (String.t): Project ID for this request.
+  - zone (String.t): The name of the zone for this request.
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
+    - :alt (String.t): Data format for the response.
+    - :fields (String.t): Selector specifying which fields to include in a partial response.
+    - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    - :oauth_token (String.t): OAuth 2.0 token for the current user.
+    - :prettyPrint (boolean()): Returns response with indentations and line breaks.
+    - :quotaUser (String.t): An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    - :userIp (String.t): Deprecated. Please use quotaUser instead.
+
+  ## Returns
+
+  {:ok, %GoogleApi.Compute.V1.Model.Policy{}} on success
+  {:error, info} on failure
+  """
+  @spec compute_disks_get_iam_policy(
+          Tesla.Env.client(),
+          String.t(),
+          String.t(),
+          String.t(),
+          keyword()
+        ) :: {:ok, GoogleApi.Compute.V1.Model.Policy.t()} | {:error, Tesla.Env.t()}
+  def compute_disks_get_iam_policy(
+        connection,
+        project,
+        zone,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
+      :alt => :query,
+      :fields => :query,
+      :key => :query,
+      :oauth_token => :query,
+      :prettyPrint => :query,
+      :quotaUser => :query,
+      :userIp => :query
+    }
+
+    request =
+      Request.new()
+      |> Request.method(:get)
+      |> Request.url("/{project}/zones/{zone}/disks/{resource}/getIamPolicy", %{
+        "project" => URI.encode_www_form(project),
+        "zone" => URI.encode_www_form(zone),
+        "resource" => URI.encode_www_form(resource)
+      })
+      |> Request.add_optional_params(optional_params_config, optional_params)
+
+    connection
+    |> Connection.execute(request)
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Policy{}])
   end
 
   @doc """
@@ -253,7 +323,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -272,8 +342,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   """
   @spec compute_disks_insert(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_insert(connection, project, zone, opts \\ []) do
-    optional_params = %{
+  def compute_disks_insert(connection, project, zone, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -293,11 +363,11 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "project" => URI.encode_www_form(project),
         "zone" => URI.encode_www_form(zone)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
   end
 
   @doc """
@@ -308,7 +378,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -328,8 +398,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   """
   @spec compute_disks_list(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.DiskList.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_list(connection, project, zone, opts \\ []) do
-    optional_params = %{
+  def compute_disks_list(connection, project, zone, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -350,11 +420,11 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "project" => URI.encode_www_form(project),
         "zone" => URI.encode_www_form(zone)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.DiskList{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.DiskList{}])
   end
 
   @doc """
@@ -366,7 +436,7 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
   - disk (String.t): The name of the persistent disk.
-  - opts (KeywordList): [optional] Optional parameters
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -384,8 +454,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   """
   @spec compute_disks_resize(Tesla.Env.client(), String.t(), String.t(), String.t(), keyword()) ::
           {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_resize(connection, project, zone, disk, opts \\ []) do
-    optional_params = %{
+  def compute_disks_resize(connection, project, zone, disk, optional_params \\ [], opts \\ []) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -405,11 +475,76 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "zone" => URI.encode_www_form(zone),
         "disk" => URI.encode_www_form(disk)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
+  end
+
+  @doc """
+  Sets the access control policy on the specified resource. Replaces any existing policy.
+
+  ## Parameters
+
+  - connection (GoogleApi.Compute.V1.Connection): Connection to server
+  - project (String.t): Project ID for this request.
+  - zone (String.t): The name of the zone for this request.
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
+    - :alt (String.t): Data format for the response.
+    - :fields (String.t): Selector specifying which fields to include in a partial response.
+    - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    - :oauth_token (String.t): OAuth 2.0 token for the current user.
+    - :prettyPrint (boolean()): Returns response with indentations and line breaks.
+    - :quotaUser (String.t): An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    - :userIp (String.t): Deprecated. Please use quotaUser instead.
+    - :body (ZoneSetPolicyRequest): 
+
+  ## Returns
+
+  {:ok, %GoogleApi.Compute.V1.Model.Policy{}} on success
+  {:error, info} on failure
+  """
+  @spec compute_disks_set_iam_policy(
+          Tesla.Env.client(),
+          String.t(),
+          String.t(),
+          String.t(),
+          keyword()
+        ) :: {:ok, GoogleApi.Compute.V1.Model.Policy.t()} | {:error, Tesla.Env.t()}
+  def compute_disks_set_iam_policy(
+        connection,
+        project,
+        zone,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
+      :alt => :query,
+      :fields => :query,
+      :key => :query,
+      :oauth_token => :query,
+      :prettyPrint => :query,
+      :quotaUser => :query,
+      :userIp => :query,
+      :body => :body
+    }
+
+    request =
+      Request.new()
+      |> Request.method(:post)
+      |> Request.url("/{project}/zones/{zone}/disks/{resource}/setIamPolicy", %{
+        "project" => URI.encode_www_form(project),
+        "zone" => URI.encode_www_form(zone),
+        "resource" => URI.encode_www_form(resource)
+      })
+      |> Request.add_optional_params(optional_params_config, optional_params)
+
+    connection
+    |> Connection.execute(request)
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Policy{}])
   end
 
   @doc """
@@ -420,8 +555,8 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
   - connection (GoogleApi.Compute.V1.Connection): Connection to server
   - project (String.t): Project ID for this request.
   - zone (String.t): The name of the zone for this request.
-  - resource (String.t): Name of the resource for this request.
-  - opts (KeywordList): [optional] Optional parameters
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
     - :alt (String.t): Data format for the response.
     - :fields (String.t): Selector specifying which fields to include in a partial response.
     - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
@@ -444,8 +579,15 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
           String.t(),
           keyword()
         ) :: {:ok, GoogleApi.Compute.V1.Model.Operation.t()} | {:error, Tesla.Env.t()}
-  def compute_disks_set_labels(connection, project, zone, resource, opts \\ []) do
-    optional_params = %{
+  def compute_disks_set_labels(
+        connection,
+        project,
+        zone,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
       :alt => :query,
       :fields => :query,
       :key => :query,
@@ -465,10 +607,76 @@ defmodule GoogleApi.Compute.V1.Api.Disks do
         "zone" => URI.encode_www_form(zone),
         "resource" => URI.encode_www_form(resource)
       })
-      |> Request.add_optional_params(optional_params, opts)
+      |> Request.add_optional_params(optional_params_config, optional_params)
 
     connection
     |> Connection.execute(request)
-    |> Response.decode(struct: %GoogleApi.Compute.V1.Model.Operation{})
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.Operation{}])
+  end
+
+  @doc """
+  Returns permissions that a caller has on the specified resource.
+
+  ## Parameters
+
+  - connection (GoogleApi.Compute.V1.Connection): Connection to server
+  - project (String.t): Project ID for this request.
+  - zone (String.t): The name of the zone for this request.
+  - resource (String.t): Name or id of the resource for this request.
+  - optional_params (KeywordList): [optional] Optional parameters
+    - :alt (String.t): Data format for the response.
+    - :fields (String.t): Selector specifying which fields to include in a partial response.
+    - :key (String.t): API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    - :oauth_token (String.t): OAuth 2.0 token for the current user.
+    - :prettyPrint (boolean()): Returns response with indentations and line breaks.
+    - :quotaUser (String.t): An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    - :userIp (String.t): Deprecated. Please use quotaUser instead.
+    - :body (TestPermissionsRequest): 
+
+  ## Returns
+
+  {:ok, %GoogleApi.Compute.V1.Model.TestPermissionsResponse{}} on success
+  {:error, info} on failure
+  """
+  @spec compute_disks_test_iam_permissions(
+          Tesla.Env.client(),
+          String.t(),
+          String.t(),
+          String.t(),
+          keyword()
+        ) ::
+          {:ok, GoogleApi.Compute.V1.Model.TestPermissionsResponse.t()} | {:error, Tesla.Env.t()}
+  def compute_disks_test_iam_permissions(
+        connection,
+        project,
+        zone,
+        resource,
+        optional_params \\ [],
+        opts \\ []
+      ) do
+    optional_params_config = %{
+      :alt => :query,
+      :fields => :query,
+      :key => :query,
+      :oauth_token => :query,
+      :prettyPrint => :query,
+      :quotaUser => :query,
+      :userIp => :query,
+      :body => :body
+    }
+
+    request =
+      Request.new()
+      |> Request.method(:post)
+      |> Request.url("/{project}/zones/{zone}/disks/{resource}/testIamPermissions", %{
+        "project" => URI.encode_www_form(project),
+        "zone" => URI.encode_www_form(zone),
+        "resource" => URI.encode_www_form(resource)
+      })
+      |> Request.add_optional_params(optional_params_config, optional_params)
+
+    connection
+    |> Connection.execute(request)
+    |> Response.decode(opts ++ [struct: %GoogleApi.Compute.V1.Model.TestPermissionsResponse{}])
   end
 end

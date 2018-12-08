@@ -15,12 +15,14 @@ defmodule GoogleApis.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :google_apis,
-     version: "0.1.0",
-     elixir: "~> 1.6",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :google_apis,
+      version: "0.1.0",
+      elixir: "~> 1.6",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
@@ -42,8 +44,8 @@ defmodule GoogleApis.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:tesla, "~> 0.5"},
-      {:poison, ">= 1.0.0"},
+      {:google_api_discovery, "~> 0.1"},
+      {:tesla, "~> 1.0"},
       {:oauth2, "~> 0.9"},
       {:temp, "~> 0.4"}
     ]

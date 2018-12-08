@@ -14,26 +14,41 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+from synthtool.__main__ import extra_args
 from synthtool import _tracked_paths
 import synthtool as s
 import synthtool.log as log
 import synthtool.shell as shell
 import synthtool.sources.git as git
 import logging
+import sys
 
 logging.basicConfig(level=logging.DEBUG)
 
-repository_url = "https://github.com/GoogleCloudPlatform/elixir-google-api.git"
+repository_url = "https://github.com/googleapis/elixir-google-api.git"
 
 log.debug(f"Cloning {repository_url}.")
 repository = git.clone(repository_url, depth=1)
+shell.run(["git", "clean", "-fdx"], cwd=repository / "clients")
 
-log.debug("Installing dependencies.")
-shell.run("mix deps.get".split(), cwd=repository)
-shell.run("npm install".split(), cwd=repository)
+image = "gcr.io/cloud-devrel-public-resources/elixir16"
+generate_command = "scripts/generate_client.sh"
+command = [
+    "docker",
+    "run",
+    "--rm",
+    f"-v{repository}:/workspace",
+    "-v/var/run/docker.sock:/var/run/docker.sock",
+    "-w", "/workspace",
+    image,
+    generate_command]
 
-log.debug("Generating all libraries.")
-shell.run("mix google_apis.generate".split(), cwd=repository)
+if extra_args():
+    command.extend(extra_args())
+
+log.debug(f"Running: {' '.join(command)}")
+
+shell.run(command, cwd=repository)
 
 # copy all clients
 s.copy(repository / "clients")

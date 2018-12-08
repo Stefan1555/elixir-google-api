@@ -13,8 +13,7 @@
 # limitations under the License.
 
 defmodule GoogleApis.ApiConfig do
-
-  defstruct [:name, :version, :url]
+  defstruct name: nil, version: nil, url: nil, publish: true
 
   def file(%{name: name, version: version}), do: "#{name}-#{version}.json"
 
@@ -28,6 +27,10 @@ defmodule GoogleApis.ApiConfig do
 
   def config_file(api_config) do
     Path.expand("./specifications/config/#{file(api_config)}")
+  end
+
+  def library_directory(api_config) do
+    Path.expand("./clients/#{library_name(api_config)}")
   end
 
   def app_name(%{name: name}) do
